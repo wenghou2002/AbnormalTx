@@ -1,0 +1,55 @@
+/* Custom high-contrast styles for navigation */
+
+/* Force dark background for navbar */
+.app-navbar {
+  background-color: #2c3e50 !important;
+  border-bottom: 3px solid #3498db !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Ensure all navigation links are white and clearly visible */
+.nav-link, .brand-text, .user-menu {
+  color: white !important;
+  font-weight: 500 !important;
+}
+
+/* Make active links stand out */
+.nav-link.active {
+  background-color: rgba(52, 152, 219, 0.7) !important;
+  border-bottom: 2px solid white !important;
+}
+
+/* Ensure logout button is highly visible */
+.direct-logout {
+  background-color: #e74c3c !important;
+  color: white !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3) !important;
+}
+
+/* Make hover states clear */
+.nav-link:hover {
+  background-color: rgba(52, 152, 219, 0.7) !important;
+}
+
+/* Fix for the top Abnormal Monitor, Dashboard, Transaction Monitor, Admin, and Logout buttons */
+a[routerLink] {
+  color: white !important;
+  background-color: #3498db !important; 
+  padding: 6px 12px !important;
+  border-radius: 4px !important;
+  margin: 0 5px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+}
+
+/* Top nav logout button specific style */
+a:contains("Logout") {
+  background-color: #e74c3c !important;
+}
+
+/* Admin button style */
+a:contains("Admin") {
+  background-color: #2c3e50 !important;
+} 

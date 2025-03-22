@@ -1,0 +1,139 @@
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<app-nv></app-nv>
+<div class="dashboard-container">
+  <div class="header">
+    <div class="header-center">
+      <h1>Real-Time Abnormal Transaction Monitor</h1>
+      <p class="subtitle">Monitor and detect suspicious transaction patterns in real-time</p>
+    </div>
+  </div>
+
+  <div class="stats-container">
+    <div class="stat-card">
+      <i class="fas fa-chart-line" aria-hidden="true"></i>
+      <div class="stat-info">
+        <h3>Total Abnormal</h3>
+        <p class="stat-number">{{transactions.length}}</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+      <div class="stat-info">
+        <h3>Alert Status</h3>
+        <p [ngClass]="{'status-active': isMonitoring, 'status-inactive': !isMonitoring}">
+          {{isMonitoring ? 'MONITORING ACTIVE' : 'MONITORING INACTIVE'}}
+        </p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <i class="fas fa-clock" aria-hidden="true"></i>
+      <div class="stat-info">
+        <h3>Last Updated</h3>
+        <p>{{lastUpdated | date:'medium'}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls-container">
+    <div class="control-wrapper">
+      <button class="start-btn" [disabled]="isMonitoring" (click)="loadtransaction()" aria-label="Start transaction monitoring">
+        <i class="fas fa-play" aria-hidden="true"></i> START MONITORING
+      </button>
+      <div class="tooltip" *ngIf="!isMonitoring">
+        <i class="fas fa-info-circle" aria-hidden="true"></i>
+        <span>Start real-time monitoring for abnormal transactions</span>
+      </div>
+    </div>
+    
+    <div class="control-wrapper">
+      <button class="stop-btn" [disabled]="!isMonitoring" (click)="stoptransaction()" aria-label="Stop transaction monitoring">
+        <i class="fas fa-stop" aria-hidden="true"></i> STOP MONITORING
+      </button>
+      <div class="tooltip" *ngIf="isMonitoring">
+        <i class="fas fa-info-circle" aria-hidden="true"></i>
+        <span>Stop the current monitoring session</span>
+      </div>
+    </div>
+    
+    <div class="control-wrapper">
+      <button class="generate-btn" [disabled]="isGeneratingData" (click)="generateDummyData(100)" aria-label="Generate dummy data">
+        <i class="fas fa-database" aria-hidden="true"></i> GENERATE 100 TRANSACTIONS
+      </button>
+      <div class="tooltip">
+        <i class="fas fa-info-circle" aria-hidden="true"></i>
+        <span>Generate 100 dummy transactions for testing</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="system-status" *ngIf="isMonitoring">
+    <span class="status-indicator active" aria-hidden="true"></span>
+    <span class="status-text">System is actively monitoring for abnormal transactions</span>
+  </div>
+
+  <div class="transactions-container" *ngIf="transactions.length > 0">
+    <div class="alert alert-warning" *ngIf="transactions.length > 0" role="alert">
+      <div class="alert-header">
+        <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+        <strong>{{transactions.length}} abnormal transaction patterns detected!</strong>
+      </div>
+      <p>These transactions may indicate automated spam or fraudulent activity.</p>
+    </div>
+
+    <div class="table-container">
+      <table class="transactions-table" aria-label="Abnormal transactions">
+        <caption class="sr-only">List of detected abnormal transactions</caption>
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">MSISDN</th>
+            <th scope="col">Message</th>
+            <th scope="col">Broadcast Date</th>
+            <th scope="col">Country</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of transactions; let i = index" [ngClass]="{'highlight-row': i % 2 === 0 && transaction.msisdn === transactions[i-1]?.msisdn}">
+            <td>{{ i + 1 }}</td>
+            <td><span class="msisdn-badge">{{ transaction.msisdn }}</span></td>
+            <td>{{ transaction.message }}</td>
+            <td>{{ transaction.broadcastDate }}</td>
+            <td><span class="country-badge">{{ transaction.country }}</span></td>
+            <td><span class="status-badge">Abnormal</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="no-data-container" *ngIf="!transactions.length && isMonitoring">
+    <div class="spinner" aria-hidden="true"></div>
+    <p>Monitoring for abnormal transactions...</p>
+    <div class="help-text">
+      <i class="fas fa-info-circle" aria-hidden="true"></i>
+      <span>If monitoring continues for an extended period with no results, check database connectivity</span>
+    </div>
+  </div>
+
+  <div class="no-data-container" *ngIf="!transactions.length && !isMonitoring">
+    <i class="fas fa-search" aria-hidden="true"></i>
+    <p>No abnormal transactions detected. Click START to begin monitoring.</p>
+    <p class="generate-text">Not seeing any data? Try generating some dummy data for testing.</p>
+  </div>
+
+  <div class="help-panel">
+    <div class="help-header">
+      <i class="fas fa-question-circle" aria-hidden="true"></i>
+      <h3>Quick Help</h3>
+    </div>
+    <ul class="help-list">
+      <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>START MONITORING:</strong> Begin scanning for abnormal transaction patterns</li>
+      <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>STOP MONITORING:</strong> Pause the monitoring process</li>
+      <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>GENERATE TRANSACTIONS:</strong> Create dummy transaction data for testing</li>
+      <li><i class="fas fa-angle-right" aria-hidden="true"></i> <strong>Dashboard:</strong> Return to the main dashboard using the top navigation bar</li>
+    </ul>
+  </div>
+</div>

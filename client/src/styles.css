@@ -1,0 +1,150 @@
+/* You can add global styles to this file, and also import other style files */
+@import './assets/custom-styles.css';
+
+/* Global reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 1200px;
+}
+
+/* Fix for dropdown menus */
+.dropdown-menu {
+  position: absolute;
+  z-index: 1000;
+  min-width: 10rem;
+  margin: 0.125rem 0 0;
+  padding: 0.5rem 0;
+  color: #212529;
+  text-align: left;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+}
+
+/* Fix for general padding/margin issues */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+/* Make sure router-outlet doesn't add unexpected spacing */
+router-outlet {
+  display: none;
+}
+
+/* Fix for basic button and form styling */
+button {
+  cursor: pointer;
+}
+
+/* Adjust proper spacing for content that comes after the navbar */
+.app-navbar + * {
+  margin-top: 80px !important;
+  padding-top: 20px;
+}
+
+/* Ensure content doesn't get blocked by fixed navbar */
+.dashboard-wrapper, .dashboard-container {
+  margin-top: 80px !important;
+}
+
+/* NAVBAR BLACK THEME STYLING */
+/* Force black background for navbar */
+.app-navbar {
+  background-color: #121212 !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3) !important;
+  border-bottom: 2px solid #3498db !important;
+}
+
+/* Ensure links in navbar have proper styling */
+.nav-link {
+  color: #e0e0e0 !important;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  padding: 10px 16px !important;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+/* Make sure the admin dropdown user menu is visible */
+.navbar-user .dropdown-menu {
+  background: #1e1e1e !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #333 !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dropdown-item {
+  color: #e0e0e0 !important;
+}
+
+.dropdown-item:hover {
+  background-color: #2d2d2d !important;
+  color: #3498db !important;
+}
+
+.user-menu {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-radius: 4px;
+  padding: 8px 12px;
+}
+
+.user-menu:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Navbar brand styling */
+.brand-text {
+  color: white !important;
+  letter-spacing: 0.5px !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+.brand-highlight {
+  color: #3498db !important;
+  font-weight: 700;
+}
+
+.logo-icon {
+  color: #3498db !important;
+}
+
+/* Ensure logout button is clearly visible */
+.direct-logout, .logout-button {
+  background-color: #e74c3c !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
+/* Give nav links proper hover state */
+.nav-link:hover, .nav-link.active {
+  background-color: #2d2d2d !important;
+  color: white !important;
+}
+
+.nav-link.active {
+  border-bottom: 2px solid #3498db !important;
+  background-color: rgba(52, 152, 219, 0.2) !important;
+}

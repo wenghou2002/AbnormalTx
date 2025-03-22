@@ -1,0 +1,98 @@
+<div class="container">
+  <!-- Navigation bar -->
+  <nav class="app-navbar" *ngIf="accountService.currentUser$ | async">
+    <div class="navbar-container">
+      <div class="navbar-brand">
+        <i class="fas fa-shield-alt logo-icon"></i>
+        <span class="brand-text">AbnormalTx <span class="brand-highlight">Monitor</span></span>
+      </div>
+      
+      <div class="navbar-links">
+        <a class="nav-link" routerLink="/home" routerLinkActive="active">
+          <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a class="nav-link" routerLink="/abnormal" routerLinkActive="active">
+          <i class="fas fa-exclamation-triangle"></i> Transaction Monitor
+        </a>
+      </div>
+      
+      <div class="navbar-user">
+        <div class="user-dropdown" dropdown>
+          <a class="user-menu" dropdownToggle>
+            <i class="fas fa-user-circle"></i>
+            <span>Admin</span>
+            <i class="fas fa-chevron-down"></i>
+          </a>
+          <ul id="dropdown-basic" *bsDropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="dropdown-basic">
+            <li role="menuitem">
+              <a class="dropdown-item" (click)="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Login page (shown only when not logged in) -->
+  <div class="login-container" *ngIf="!(accountService.currentUser$ | async)">
+    <div class="login-card">
+      <div class="login-header">
+        <i class="fas fa-shield-alt logo-icon"></i>
+        <h1>Abnormal Transaction<br>Monitoring System</h1>
+        <p class="subtitle">Secure administrator login</p>
+      </div>
+      
+      <form #loginForm="ngForm" class="login-form" (ngSubmit)="login()" autocomplete="off">
+        <div class="form-group">
+          <label for="username">
+            <i class="fas fa-user"></i> Username
+          </label>
+          <input 
+            id="username"
+            name="username" 
+            [(ngModel)]="model.username" 
+            class="form-control" 
+            type="text" 
+            placeholder="Enter your username"
+            required
+            aria-required="true">
+        </div>
+        
+        <div class="form-group">
+          <label for="password">
+            <i class="fas fa-lock"></i> Password
+          </label>
+          <div class="password-input">
+            <input 
+              id="password"
+              [type]="changetype ? 'password' : 'text'" 
+              name="password" 
+              [(ngModel)]="model.password" 
+              class="form-control" 
+              placeholder="Enter your password"
+              required
+              aria-required="true">
+            <button 
+              type="button" 
+              class="password-toggle" 
+              (click)="togglePasswordVisibility()"
+              aria-label="Toggle password visibility">
+              <i [class]="changetype ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+            </button>
+          </div>
+        </div>
+        
+        <button class="login-button" type="submit">
+          <i class="fas fa-sign-in-alt"></i> Sign In
+        </button>
+      </form>
+      
+      <div class="login-footer">
+        <p>&copy; 2023 Abnormal Transaction Monitoring System</p>
+      </div>
+    </div>
+  </div>
+</div>

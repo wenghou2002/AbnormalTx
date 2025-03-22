@@ -1,0 +1,99 @@
+<app-nv></app-nv>
+
+<div class="dashboard-wrapper">
+  <div class="dashboard-header">
+    <div class="header-main">
+      <h1>Admin Dashboard</h1>
+      <p class="subtitle">Welcome to the Abnormal Transaction Monitoring System</p>
+      <div class="system-status">
+        <span class="status-indicator active"></span>
+        <span>System Status: Active</span>
+      </div>
+    </div>
+    
+    <div class="header-actions">
+      <div class="current-datetime">
+        <div class="time">{{ currentTime | date:'shortTime' }}</div>
+        <div class="date">{{ currentTime | date:'fullDate' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-stats">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-shield-alt"></i>
+      </div>
+      <div class="stat-content">
+        <h3>System Status</h3>
+        <p class="stat-value">Active</p>
+        <p class="stat-desc">Monitoring system is online</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-database"></i>
+      </div>
+      <div class="stat-content">
+        <h3>Database</h3>
+        <p class="stat-value">Connected</p>
+        <p class="stat-desc">SQL Server connection is active</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-clock"></i>
+      </div>
+      <div class="stat-content">
+        <h3>Last Check</h3>
+        <p class="stat-value">{{ currentTime | date:'medium' }}</p>
+        <p class="stat-desc">System last updated</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-actions">
+    <div class="action-card">
+      <div class="action-header">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h3>Transaction Monitor</h3>
+      </div>
+      <p>Start monitoring for abnormal transactions in real-time. The system will alert you when suspicious patterns are detected.</p>
+      <div class="action-help">
+        <i class="fas fa-info-circle"></i>
+        <span>Click to access the transaction monitoring interface where you can start/stop real-time monitoring</span>
+      </div>
+      <a routerLink="/abnormal" class="action-button" aria-label="Go to Transaction Monitor">
+        <i class="fas fa-arrow-right"></i> Go to Monitor
+      </a>
+    </div>
+
+    <div class="action-card">
+      <div class="action-header">
+        <i class="fas fa-chart-line"></i>
+        <h3>System Overview</h3>
+      </div>
+      <p>The Abnormal Transaction Monitoring System detects suspicious patterns using real-time analysis of transaction data.</p>
+      <ul class="feature-list">
+        <li><i class="fas fa-check"></i> Real-time monitoring</li>
+        <li><i class="fas fa-check"></i> Immediate alerts</li>
+        <li><i class="fas fa-check"></i> Optimized for large datasets</li>
+        <li><i class="fas fa-check"></i> Secure admin access</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="help-panel">
+    <div class="help-header">
+      <i class="fas fa-question-circle"></i>
+      <h3>Quick Help</h3>
+    </div>
+    <ul class="help-list">
+      <li><i class="fas fa-angle-right"></i> <strong>Transaction Monitor:</strong> Start real-time monitoring to detect suspicious activities</li>
+      <li><i class="fas fa-angle-right"></i> <strong>Logout:</strong> Use the logout button in the top-right corner to exit the system securely</li>
+      <li><i class="fas fa-angle-right"></i> <strong>System Status:</strong> Check the status indicators to ensure all systems are running properly</li>
+    </ul>
+  </div>
+</div>
