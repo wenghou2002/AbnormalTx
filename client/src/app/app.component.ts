@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Router, NavigationEnd } from '@angular/router';
 import { AccountService } from './_services/account.service';
 import { User } from './_models/user';
 import { Transaction, TransactionService } from './transaction.service';
-import { take } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -12,21 +14,42 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'SpamApp';
+  title = 'AbnormalTx Monitor';
   users: any;
-  duplicateTransactions: Transaction[] = [];  // Add a property to store duplicate transactions
+  duplicateTransactions: Transaction[] = [];
   currentUser: User | null = null;
+  initialNavigation = true;
 
   constructor(
     private http: HttpClient,
     private accountService: AccountService,
-    private transactionService: TransactionService,  // Inject TransactionService
-    private router: Router
-  ) {}
+    private transactionService: TransactionService,
+    private router: Router,
+    private titleService: Title,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.titleService.setTitle(this.title);
+  }
 
   ngOnInit(): void {
-    this.setCurrentUser();
-    // Check if user is logged in from the observable
+    // Prevent flickering during initial navigation
+    if (isPlatformBrowser(this.platformId)) {
+      const savedPath = localStorage.getItem('lastPath');
+      if (savedPath && savedPath.includes('home')) {
+        this.router.navigateByUrl(savedPath);
+      }
+    }
+
+    // Monitor routes and save last path
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      if (isPlatformBrowser(this.platformId) && event.url !== '/login') {
+        localStorage.setItem('lastPath', event.url);
+      }
+    });
+
+    // The account service is handling loading and authentication now
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
       this.currentUser = user;
       if (user) {
@@ -40,28 +63,12 @@ export class AppComponent implements OnInit {
       next: response => this.users = response,
       error: error => {
         console.log(error);
-        // If server error, don't log out user, just show a warning
         if (error.status === 500) {
           console.warn('Server connection issue detected');
         }
       },
       complete: () => console.log('Request has completed')
     });
-  }
-
-  setCurrentUser() {
-    if (typeof localStorage !== 'undefined') {
-      const userString = localStorage.getItem('user');
-      if (!userString) {
-        this.router.navigateByUrl('/login');
-        return;
-      }
-      const user: User = JSON.parse(userString);
-      this.accountService.setCurremtUser(user);
-    } else {
-      console.warn('localStorage is not available.');
-      this.router.navigateByUrl('/login');
-    }
   }
 
   checkDuplicateTransactions() {
@@ -71,5 +78,4 @@ export class AppComponent implements OnInit {
       complete: () => console.log('Duplicate transactions fetch completed')
     });
   }
-  
 }

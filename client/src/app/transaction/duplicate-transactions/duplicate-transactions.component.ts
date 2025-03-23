@@ -150,7 +150,7 @@ export class DuplicateTransactionsComponent implements OnInit, OnDestroy {
           
           if (error.status === 401) {
             errorMessage = 'Authentication error. Please log in again.';
-            localStorage.removeItem('user');
+            this.accountService.logout(); // Use the account service instead of direct localStorage access
             setTimeout(() => this.router.navigateByUrl('/login'), 3000);
           } else if (error.status === 500) {
             errorMessage = 'Server error occurred. Please try again later.';

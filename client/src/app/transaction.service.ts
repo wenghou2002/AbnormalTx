@@ -1,34 +1,39 @@
 // src/app/tt/transaction.service.ts
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
 import { catchError, retry, tap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
+import { isPlatformBrowser } from '@angular/common';
+import { AccountService } from './_services/account.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
   private apiUrl = `${environment.apiBaseUrl}/transaction`;
+  private memoryStorage: { [key: string]: string } = {}; // Fallback for server
   
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private accountService: AccountService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     console.log('API URL:', this.apiUrl);
   }
 
-  // Helper method to get auth token from localStorage
+  // Helper method to get auth token from storage
   private getAuthHeaders(): HttpHeaders {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     
-    try {
-      const userString = localStorage.getItem('user');
-      if (userString) {
-        const user = JSON.parse(userString);
-        if (user.token) {
-          headers = headers.set('Authorization', `Bearer ${user.token}`);
-        }
-      }
-    } catch (error) {
-      console.error('Error accessing localStorage:', error);
+    // Let the current user$ observable handle authentication
+    let user: any = null;
+    this.accountService.currentUser$.subscribe(currentUser => {
+      user = currentUser;
+    }).unsubscribe();
+    
+    if (user?.token) {
+      headers = headers.set('Authorization', `Bearer ${user.token}`);
     }
     
     return headers;

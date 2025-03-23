@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { DuplicateTransactionsComponent } from './transaction/duplicate-transactions/duplicate-transactions.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { RouterModule } from '@angular/router';
+import { LoadingComponent } from './loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { RouterModule } from '@angular/router';
     NvComponent,
     HomeComponent,
     DuplicateTransactionsComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,10 @@ import { RouterModule } from '@angular/router';
     SweetAlert2Module.forRoot(),
     RouterModule 
   ],
-  providers: [],
+  providers: [
+    provideHttpClient(withFetch()),
+    provideClientHydration()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

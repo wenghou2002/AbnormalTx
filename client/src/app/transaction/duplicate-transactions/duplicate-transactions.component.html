@@ -96,7 +96,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let transaction of transactions; let i = index" [ngClass]="{'highlight-row': i % 2 === 0 && transaction.msisdn === transactions[i-1]?.msisdn}">
+          <tr *ngFor="let transaction of transactions; let i = index" [ngClass]="{'highlight-row': i > 0 && i % 2 === 0 && transaction.msisdn === transactions[i-1].msisdn}">
             <td>{{ i + 1 }}</td>
             <td><span class="msisdn-badge">{{ transaction.msisdn }}</span></td>
             <td>{{ transaction.message }}</td>

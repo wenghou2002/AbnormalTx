@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AccountService } from '../_services/account.service';
-import { Observable, skipWhile, take, map, switchMap } from 'rxjs';
+import { Observable, skipWhile, map, take, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class LoginGuard implements CanActivate {
 
   constructor(private accountService: AccountService, private router: Router) {}
 
@@ -18,14 +18,14 @@ export class AuthGuard implements CanActivate {
       switchMap(() => this.accountService.currentUser$.pipe(
         take(1),
         map(user => {
-          if (user) {
+          if (!user) {
             return true;
           } else {
-            this.router.navigate(['/login']);
+            this.router.navigate(['/home']);
             return false;
           }
         })
       ))
     );
   }
-}
+} 
